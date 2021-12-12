@@ -2,6 +2,7 @@ package database
 
 import (
 	"fmt"
+	"log"
 	"shorturlsrv/config"
 
 	"gorm.io/driver/mysql"
@@ -15,6 +16,7 @@ func InitDB() error {
 	MysqlClients = make(map[string]*gorm.DB)
 	db, err := gorm.Open(mysql.Open(config.MysqlDefault.Dns), &config.MysqlDefault.Config)
 	if err != nil {
+		log.Println(err)
 		return err
 	}
 	fmt.Println("Conn mysql database success.")
