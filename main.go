@@ -17,6 +17,7 @@ func main() {
 	database.InitRedis()
 	// 迁移文件
 	database.Migrate()
+	database.Seed()
 
 	// 注册路由
 	router := gin.Default()

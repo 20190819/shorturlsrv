@@ -19,9 +19,9 @@ func Success(ctx *gin.Context, data interface{}) {
 	})
 }
 
-func Failed(ctx *gin.Context) {
+func ApiException(ctx *gin.Context, code int, msg string) {
 	ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
-		"code": CodeFailed,
-		"msg":  "系统异常",
+		"code": code,
+		"msg":  msg,
 	})
 }
