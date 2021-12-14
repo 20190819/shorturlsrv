@@ -12,11 +12,14 @@ const (
 )
 
 func Success(ctx *gin.Context, data interface{}) {
-	ctx.AbortWithStatusJSON(http.StatusOK, gin.H{
+	resp := gin.H{
 		"code": 0,
 		"msg":  "请求成功",
-		"data": data,
-	})
+	}
+	if data != nil {
+		resp["data"] = data
+	}
+	ctx.AbortWithStatusJSON(http.StatusOK, resp)
 }
 
 func ApiException(ctx *gin.Context, code int, msg string) {
