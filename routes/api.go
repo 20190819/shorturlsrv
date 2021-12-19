@@ -11,6 +11,15 @@ import (
 func Api(router *gin.Engine) {
 	apiGroup := router.Group("api")
 
+	authGroup := apiGroup.Group("/auth")
+	authGroup.POST("/register", controllers.AuthController.Register)
+	authGroup.POST("/login", controllers.AuthController.Login)
+
+	secGroup := apiGroup.Group("/secrets")
+	secGroup.GET("/", controllers.SecretController.List)
+	secGroup.POST("/", controllers.SecretController.Store)
+	secGroup.DELETE("/", controllers.SecretController.Destroy)
+
 	shortUrlGroup := apiGroup.Group("/short_urls")
 	shortUrlGroup.Use(middleware.CheckSecret())
 	shortUrlGroup.GET("", controllers.ShortUrlController.List)
@@ -19,7 +28,4 @@ func Api(router *gin.Engine) {
 	shortUrlGroup.PUT("/:id", controllers.ShortUrlController.Update)
 	shortUrlGroup.DELETE("/:id", controllers.ShortUrlController.Destroy)
 
-	authGroup := apiGroup.Group("/auth")
-	authGroup.POST("/register", controllers.AuthController.Register)
-	authGroup.POST("/login", controllers.AuthController.Login)
 }

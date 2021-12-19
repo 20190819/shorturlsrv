@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"shorturlsrv/config"
+	"strconv"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -30,7 +31,9 @@ func InitDB() error {
 }
 
 // 自定义分页
-func (db *mysqlDB) Paging(page, limit int) *gorm.DB {
-	offs := (page - 1) * limit
-	return MysqlClient.Offset(offs).Limit(limit)
+func (db *mysqlDB) Paging(page, limit string) *gorm.DB {
+	pageInt, _ := strconv.Atoi(page)
+	limitInt, _ := strconv.Atoi(limit)
+	offs := (pageInt - 1) * limitInt
+	return MysqlClient.Offset(offs).Limit(limitInt)
 }

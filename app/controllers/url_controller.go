@@ -4,7 +4,6 @@ import (
 	"shorturlsrv/database"
 	"shorturlsrv/models"
 	"shorturlsrv/utils"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,10 +16,8 @@ func (u *shorturl) List(ctx *gin.Context) {
 	var data []models.UrlModel
 	page := ctx.DefaultQuery("page", "1")
 	limit := ctx.DefaultQuery("limit", "10")
-	pageInt, _ := strconv.Atoi(page)
-	limitInt, _ := strconv.Atoi(limit)
 
-	database.MysqlClient.Paging(pageInt, limitInt).Find(&data)
+	database.MysqlClient.Paging(page, limit).Find(&data)
 	Success(ctx, data)
 }
 
