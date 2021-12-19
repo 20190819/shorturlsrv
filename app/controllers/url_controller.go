@@ -11,12 +11,7 @@ import (
 
 type shorturl struct{}
 
-var ShortUrlController = new(shorturl)
-
-type add struct {
-	Url  string `json:"url" form:"url" binding:"required"`
-	Code string `json:"code"`
-}
+var ShortUrlController = shorturl{}
 
 func (u *shorturl) List(ctx *gin.Context) {
 	var data []models.UrlModel
@@ -34,13 +29,16 @@ func (u *shorturl) Show(ctx *gin.Context) {
 }
 
 func (u *shorturl) Store(ctx *gin.Context) {
-	add := add{}
-	ctx.ShouldBind(&add)
+	data := struct {
+		Url  string `json:"url" form:"url" binding:"required"`
+		Code string `json:"code"`
+	}{}
+	ctx.ShouldBind(&data)
 	umodel := models.UrlModel{
-		Url:  add.Url,
+		Url:  data.Url,
 		Code: utils.Str.Random(8),
 	}
-	database.MysqlClient.Create(&umodel)
+	database.MysqlClient.FirstOrCreate(&umodel, models.UrlModel{Url: data.Url})
 	Success(ctx, umodel)
 }
 
