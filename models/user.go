@@ -1,11 +1,23 @@
 package models
 
 import (
-	"gorm.io/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
-type Users struct {
-	gorm.Model
-	username string `gorm:"column:username;type:varchar(100);not null;comment:用户名"`
-	password string `gorm:"column:password;not null;comment:密码"`
+type user struct {
+	Id
+	Email    string `json:"email" gorm:"column:email;type:varchar(50);not null;uniqure;comment:邮箱"`
+	Password string `json:"password" gorm:"column:password;not null;comment:密码"`
+	TimeAt
+}
+
+type UserModel = user
+
+func (us UserModel) Hash(pwd string) (string, error) {
+	b, err := bcrypt.GenerateFromPassword([]byte(pwd), 14)
+	if err != nil {
+		return "", err
+	} else {
+		return string(b), nil
+	}
 }

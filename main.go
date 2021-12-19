@@ -5,6 +5,7 @@ import (
 	"shorturlsrv/app"
 	_ "shorturlsrv/bootstrap"
 	"shorturlsrv/database"
+	"shorturlsrv/database/seed"
 	"shorturlsrv/routes"
 
 	"github.com/gin-gonic/gin"
@@ -17,7 +18,7 @@ func main() {
 	database.InitRedis()
 	// 迁移文件
 	database.Migrate()
-	database.Seed()
+	seed.Seeder()
 
 	// 注册路由
 	router := gin.Default()

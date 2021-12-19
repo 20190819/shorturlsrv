@@ -13,9 +13,13 @@ func Api(router *gin.Engine) {
 
 	shortUrlGroup := apiGroup.Group("/short_urls")
 	shortUrlGroup.Use(middleware.CheckSecret())
-	shortUrlGroup.GET("", controllers.ShortUrl.List)
-	shortUrlGroup.GET("/:id", controllers.ShortUrl.Show)
-	shortUrlGroup.POST("/", controllers.ShortUrl.Store)
-	shortUrlGroup.PUT("/:id", controllers.ShortUrl.Update)
-	shortUrlGroup.DELETE("/:id", controllers.ShortUrl.Destroy)
+	shortUrlGroup.GET("", controllers.ShortUrlController.List)
+	shortUrlGroup.GET("/:id", controllers.ShortUrlController.Show)
+	shortUrlGroup.POST("/", controllers.ShortUrlController.Store)
+	shortUrlGroup.PUT("/:id", controllers.ShortUrlController.Update)
+	shortUrlGroup.DELETE("/:id", controllers.ShortUrlController.Destroy)
+
+	authGroup := apiGroup.Group("/auth")
+	authGroup.POST("/register", controllers.AuthController.Register)
+	authGroup.POST("/login", controllers.AuthController.Login)
 }

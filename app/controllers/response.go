@@ -23,7 +23,13 @@ func Success(ctx *gin.Context, data interface{}) {
 }
 
 func ApiException(ctx *gin.Context, code int, msg string) {
-	ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+	status := 0
+	if code == -1 {
+		status = http.StatusOK
+	} else if code == 500 {
+		status = http.StatusInternalServerError
+	}
+	ctx.AbortWithStatusJSON(status, gin.H{
 		"code": code,
 		"msg":  msg,
 	})

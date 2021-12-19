@@ -26,7 +26,7 @@ func validate(key, sec string) error {
 	if key == "" || sec == "" {
 		return errors.New("Key or secret is missing")
 	}
-	secretRow := models.Secret{}
+	secretRow := models.SecretModel{}
 
 	if err := database.MysqlClient.Where("`key`=?", key).First(&secretRow).Error; err != nil {
 		return err

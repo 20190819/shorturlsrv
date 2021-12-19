@@ -11,7 +11,7 @@ import (
 
 type shorturl struct{}
 
-var ShortUrl = new(shorturl)
+var ShortUrlController = new(shorturl)
 
 type add struct {
 	Url  string `json:"url" form:"url" binding:"required"`
@@ -19,7 +19,7 @@ type add struct {
 }
 
 func (u *shorturl) List(ctx *gin.Context) {
-	var data []models.Urls
+	var data []models.UrlModel
 	page := ctx.DefaultQuery("page", "1")
 	limit := ctx.DefaultQuery("limit", "10")
 	pageInt, _ := strconv.Atoi(page)
@@ -36,7 +36,7 @@ func (u *shorturl) Show(ctx *gin.Context) {
 func (u *shorturl) Store(ctx *gin.Context) {
 	add := add{}
 	ctx.ShouldBind(&add)
-	umodel := models.Urls{
+	umodel := models.UrlModel{
 		Url:  add.Url,
 		Code: utils.Str.Random(8),
 	}
@@ -53,6 +53,6 @@ func (u shorturl) Destroy(ctx *gin.Context) {
 		Id string `uri:"id"`
 	}
 	ctx.ShouldBindUri(&req)
-	database.MysqlClient.Delete(&models.Urls{}, req.Id)
+	database.MysqlClient.Delete(&models.UrlModel{}, req.Id)
 	Success(ctx, nil)
 }
