@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/cosmtrek/air v1.27.8 // indirect
+	github.com/dgrijalva/jwt-go v3.2.0+incompatible // indirect
 	github.com/gin-gonic/gin v1.7.7 // indirect
 	github.com/go-redis/redis/v8 v8.11.4 // indirect
 	github.com/spf13/viper v1.10.0 // indirect

@@ -21,3 +21,7 @@ func (us UserModel) Hash(pwd string) (string, error) {
 		return string(b), nil
 	}
 }
+
+func (us UserModel) CheckPwd(hasPwd, pwd string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hasPwd), []byte(pwd))
+}
