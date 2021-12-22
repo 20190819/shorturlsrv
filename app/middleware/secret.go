@@ -2,6 +2,7 @@ package middleware
 
 import (
 	"errors"
+	"net/http"
 	"shorturlsrv/app/controllers"
 	"shorturlsrv/database"
 	"shorturlsrv/models"
@@ -15,7 +16,7 @@ func CheckSecret() gin.HandlerFunc {
 		sec := ctx.GetHeader("x-secret")
 		err := validate(key, sec)
 		if err != nil {
-			controllers.ApiException(ctx, controllers.CodeFailed, err.Error())
+			controllers.ApiException(ctx, http.StatusOK, controllers.CodeFailed, err.Error())
 			return
 		}
 		ctx.Next()

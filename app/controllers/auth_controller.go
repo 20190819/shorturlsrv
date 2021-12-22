@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"errors"
+	"net/http"
 	"shorturlsrv/app/services"
 	"shorturlsrv/database"
 	"shorturlsrv/models"
@@ -22,12 +23,12 @@ func (au auth) Register(ctx *gin.Context) {
 	oldUser := models.UserModel{}
 	rows := database.MysqlClient.Where("email=?", data.Email).First(&oldUser).RowsAffected
 	if rows > 0 {
-		ApiException(ctx, CodeFailed, errors.New("邮箱被占用").Error())
+		ApiException(ctx, http.StatusOK, CodeFailed, errors.New("邮箱被占用").Error())
 		return
 	}
 	hashStr, err := models.UserModel{}.Hash(data.Password)
 	if err != nil {
-		ApiException(ctx, CodeFailed, err.Error())
+		ApiException(ctx, http.StatusOK, CodeFailed, err.Error())
 		return
 	}
 	data.Password = hashStr
@@ -37,7 +38,7 @@ func (au auth) Register(ctx *gin.Context) {
 	user.Password = data.Password
 	err = database.MysqlClient.Create(&user).Error
 	if err != nil {
-		ApiException(ctx, CodeFailed, err.Error())
+		ApiException(ctx, http.StatusOK, CodeFailed, err.Error())
 		return
 	}
 	Success(ctx, user)
@@ -52,20 +53,20 @@ func (au auth) Login(ctx *gin.Context) {
 	user := models.UserModel{}
 	rows := database.MysqlClient.Where("email=?", data.Email).First(&user).RowsAffected
 	if rows == 0 {
-		ApiException(ctx, CodeFailed, errors.New("邮箱不正确").Error())
+		ApiException(ctx, http.StatusOK, CodeFailed, errors.New("邮箱不正确").Error())
 		return
 	}
 
 	err := user.CheckPwd(user.Password, data.Password)
 	if err != nil {
-		ApiException(ctx, CodeFailed, "密码不正确")
+		ApiException(ctx, http.StatusOK, CodeFailed, "密码不正确")
 		return
 	}
 
 	// 校验通过
 	token, err := services.CreateToken(user.Email)
 	if err != nil {
-		ApiException(ctx, CodeFailed, errors.New("创建token错误").Error())
+		ApiException(ctx, http.StatusOK, CodeFailed, errors.New("创建token错误").Error())
 		return
 	}
 
