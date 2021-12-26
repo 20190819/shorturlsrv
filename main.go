@@ -22,7 +22,7 @@ func main() {
 
 	// 注册路由
 	router := gin.Default()
+	// router.Use(middleware.CroseEnable())
 	routes.Api(router)
 	log.Fatalln(router.Run(app.EnvStr("APP_HOST")))
-
 }

@@ -14,11 +14,13 @@ var ShortUrlController = shorturl{}
 
 func (u *shorturl) List(ctx *gin.Context) {
 	var data []models.UrlModel
+	var count int64
 	page := ctx.DefaultQuery("page", "1")
 	limit := ctx.DefaultQuery("limit", "10")
 
 	database.MysqlClient.Paging(page, limit).Find(&data)
-	Success(ctx, data)
+	database.MysqlClient.Model(&models.UrlModel{}).Count(&count)
+	SuccessWithCount(ctx, data, count)
 }
 
 func (u *shorturl) Show(ctx *gin.Context) {
