@@ -26,7 +26,7 @@ func Api(router *gin.Engine) {
 	secGroup.Use(middleware.AuthApi())
 	shortUrlGroup.GET("", controllers.ShortUrlController.List)
 	shortUrlGroup.GET("/:id", controllers.ShortUrlController.Show)
-	shortUrlGroup.POST("/", controllers.ShortUrlController.Store)
+	shortUrlGroup.POST("", controllers.ShortUrlController.Store)
 	shortUrlGroup.PUT("/:id", controllers.ShortUrlController.Update)
 	shortUrlGroup.DELETE("/:id", controllers.ShortUrlController.Destroy)
 }

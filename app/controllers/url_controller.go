@@ -18,7 +18,7 @@ func (u *shorturl) List(ctx *gin.Context) {
 	page := ctx.DefaultQuery("page", "1")
 	limit := ctx.DefaultQuery("limit", "10")
 
-	database.MysqlClient.Paging(page, limit).Find(&data)
+	database.MysqlClient.Paging(page, limit).Order("id desc").Find(&data)
 	database.MysqlClient.Model(&models.UrlModel{}).Count(&count)
 	SuccessWithCount(ctx, data, count)
 }
@@ -29,8 +29,7 @@ func (u *shorturl) Show(ctx *gin.Context) {
 
 func (u *shorturl) Store(ctx *gin.Context) {
 	data := struct {
-		Url  string `json:"url" form:"url" binding:"required"`
-		Code string `json:"code"`
+		Url string `json:"url" form:"url" binding:"required"`
 	}{}
 	ctx.ShouldBind(&data)
 	umodel := models.UrlModel{
