@@ -6,8 +6,8 @@ import (
 )
 
 func Seeder() {
-	secretSeeder()
-	// userSeeder()
+	// secretSeeder()
+	userSeeder()
 }
 func secretSeeder() {
 	database.Truncate("secrets")
@@ -20,9 +20,10 @@ func secretSeeder() {
 
 func userSeeder() {
 	database.Truncate("users")
+	pwd, _ := models.UserModel{}.Hash("123456")
 	user := models.UserModel{
 		Email:    "1234567890@qq.com",
-		Password: "123456",
+		Password: pwd,
 	}
 	database.MysqlClient.FirstOrCreate(&user)
 }
