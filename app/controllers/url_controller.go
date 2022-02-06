@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"shorturlsrv/app"
 	"shorturlsrv/database"
 	"shorturlsrv/models"
 	"shorturlsrv/utils"
@@ -34,7 +35,7 @@ func (u *shorturl) Store(ctx *gin.Context) {
 	ctx.ShouldBind(&data)
 	umodel := models.UrlModel{
 		Url:  data.Url,
-		Code: utils.Str.Random(8),
+		Code: app.EnvStr("SHORT_URL_HOST") + "/" + utils.Str.Random(8),
 	}
 	database.MysqlClient.FirstOrCreate(&umodel, models.UrlModel{Url: data.Url})
 	Success(ctx, umodel)
